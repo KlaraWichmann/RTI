@@ -83,12 +83,12 @@ public class Draggable : MonoBehaviour
         if (isEnlarged)
         {
             transform.localScale *= 3f; // Increase scale by 3 times
-            spriteRenderer.sortingOrder = 1; // Set the sorting order higher to overlay other images
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1f); // Set the Z position to ensure it appears on top
         }
         else
         {
             transform.localScale = originalScale; // Restore original scale
-            spriteRenderer.sortingOrder = 0; // Restore the original sorting order
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f); // Restore original Z position
         }
     }
 }
