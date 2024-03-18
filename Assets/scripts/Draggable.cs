@@ -9,6 +9,7 @@ public class Draggable : MonoBehaviour
     bool isEnlarged = false;
     Vector3 originalScale;
     SpriteRenderer spriteRenderer;
+    float dragStartTime;
 
     private Vector3 GetMouseWorldPosition()
     {
@@ -49,6 +50,7 @@ public class Draggable : MonoBehaviour
     {
         mousePositionOffset = transform.position - GetMouseWorldPosition();
         isDragging = true;
+        dragStartTime = Time.time; // Record the start time of the drag
     }
 
     private void OnMouseDrag()
@@ -59,15 +61,19 @@ public class Draggable : MonoBehaviour
     private void OnMouseUp()
     {
         isDragging = false;
-        LogPosition(transform.position);
+        float dragDuration = Time.time - dragStartTime; // Calculate the drag duration
+        if (dragDuration > 0.1f) { //check if user actually dragged image or just clicked it
+          LogPosition(transform.position, dragDuration); // Pass drag duration to LogPosition method
+        }
     }
 
-    private void LogPosition(Vector3 position)
+
+    private void LogPosition(Vector3 position, float dragDuration)
     {
         // Log the position of the dropped image using ImagePositionLogger
         if (positionLogger != null)
         {
-            positionLogger.LogImagePosition(transform, gameObject.name);
+            positionLogger.LogImagePosition(transform, gameObject.name, dragDuration);
         }
     }
 
