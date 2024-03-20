@@ -2441,7 +2441,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Please arrange the images so that the images that are more related are
+  m_text: Please arrange the images so that the images that are more similar are
     closer together. You can enlarge and minimize the images with a right click.
     When you are finished, please click the submit button.
   m_isRightToLeft: 0
