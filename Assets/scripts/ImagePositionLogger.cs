@@ -1,9 +1,17 @@
 using UnityEngine;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class ImagePositionLogger : MonoBehaviour
 {
-    public string csvFilePath = "position_data.csv"; // File path to save the CSV file
+    private string csvFilePath; // File path to save the CSV file
+
+    private void Start()
+    {
+        // Generate the CSV file path based on the current scene's name
+        string sceneName = SceneManager.GetActiveScene().name;
+        csvFilePath = $"{sceneName}_position_data.csv";
+    }
 
     private void LogPosition(float dragStartTime, float dragEndTime, float dragDuration, Vector3 position, string imageName)
     {
@@ -21,15 +29,6 @@ public class ImagePositionLogger : MonoBehaviour
 
     private void SaveToCSV(float dragStartTime, float dragEndTime, float dragDuration, Vector3 position, string imageName)
     {
-        // Check if the file exists, if not create a new file with header
-        if (!File.Exists(csvFilePath))
-        {
-            using (StreamWriter writer = new StreamWriter(csvFilePath))
-            {
-                writer.WriteLine("DragStart,DragEnd,DragDuration,ImageName,XPosition,YPosition");
-            }
-        }
-
         // Append the position and duration data to the CSV file
         using (StreamWriter writer = new StreamWriter(csvFilePath, true))
         {
