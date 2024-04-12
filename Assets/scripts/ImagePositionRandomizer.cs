@@ -44,27 +44,29 @@ public class ImagePositionRandomizer : MonoBehaviour
             return shuffledList.Take(count).ToList();
         }
 
-    private void AssignPositions()
-    {
-        bool reduced = false;
-        List<Transform> reducedImages = new List<Transform>();
-        // if there are more images than positions randomly reduce the image list to the size of the positions
-        if (images.Count > positions.Count)
+        private void AssignPositions()
         {
-            reduced = true;
-            reducedImages = ReduceList(images, positions.Count);
-        }
-        // Assign positions to the images
-        for (int i = 0; i < images.Count; i++)
-        {
-            if (reduced)
+            List<Transform> imagesToUse = images; // Use the original list by default
+
+            // if there are more images than positions, randomly reduce the image list to the size of the positions
+            if (images.Count > positions.Count)
             {
-                reducedImages[i].position = positions[i];
-            } else
+                imagesToUse = ReduceList(images, positions.Count);
+            }
+
+            // Assign positions to the images
+            for (int i = 0; i < imagesToUse.Count; i++)
             {
-              reduced = false;
-              images[i].position = positions[i];
+                // Check if the current image is not null before accessing its position
+                if (imagesToUse[i] != null)
+                {
+                    imagesToUse[i].position = positions[i];
+                }
+                else
+                {
+                    Debug.LogWarning("Image at index " + i + " is null. Skipping position assignment.");
+                }
             }
         }
-    }
+
 }
